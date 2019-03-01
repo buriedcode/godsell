@@ -36,9 +36,9 @@ export default {
       param.append('file', file, file.name)// 通过append向form对象添加数据
       // param.append('chunk', '0')// 添加form表单中其他数据
 
-      let config = {
+      /* let config = {
         headers: {'Content-Type': 'multipart/form-data'}
-      } // 添加请求头
+      } // 添加请求头 */
       /* this.axios.post('localhost:8016/user/fileUpload', param, config)
         .then(response => {
           console.log(response.data)
@@ -53,7 +53,7 @@ export default {
           info: '很好很好'
         },
         headers: {}
-        /*headers: {'Content-Type': 'multipart/form-data'}*/
+        /* headers: {'Content-Type': 'multipart/form-data'} */
       }).then(function (response) {
         console.log(response.data)
       }).catch(function (error) {
