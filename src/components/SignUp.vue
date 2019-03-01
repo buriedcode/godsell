@@ -12,7 +12,8 @@
            <input style="height: 25px;width: 90%;margin-left: 10px;" placeholder='请输入姓名'/>
            <span style="margin: 10px">* 相片(支持一张,第一张为封面)</span>
            <div style="border: 1px dashed #ccc;height: 70px;width: 90%;margin: 10px;display: flex;align-items: center;justify-content: center">
-             <span>点击添加图片</span>
+             <!--<span>点击添加图片</span>-->
+             <input type="file" accept="image/*" @change="update">
            </div>
            <span style="margin: 10px">爱的宣言</span>
            <textarea style="height: 80px;width: 90%;margin-left: 10px;padding-left: 10px;vertical-align: top" placeholder='请输入爱的宣言'/>
@@ -26,7 +27,40 @@
 
 <script>
 export default {
-  name: 'SignUp'
+  name: 'SignUp',
+  methods: {
+    update: function (e) {
+      let file = e.target.files[0]
+      let param = new FormData()
+      console.log('111111')
+      param.append('file', file, file.name)// 通过append向form对象添加数据
+      // param.append('chunk', '0')// 添加form表单中其他数据
+
+      let config = {
+        headers: {'Content-Type': 'multipart/form-data'}
+      } // 添加请求头
+      /* this.axios.post('localhost:8016/user/fileUpload', param, config)
+        .then(response => {
+          console.log(response.data)
+        }) */
+      this.$axios({
+        method: 'post',
+        url: 'http://localhost:8016/user/register',
+        data: {
+          userName: '小姜',
+          phone: '18569080230',
+          picId: '123',
+          info: '很好很好'
+        },
+        headers: {}
+        /*headers: {'Content-Type': 'multipart/form-data'}*/
+      }).then(function (response) {
+        console.log(response.data)
+      }).catch(function (error) {
+        console.log(error)
+      })
+    }
+  }
 }
 </script>
 
