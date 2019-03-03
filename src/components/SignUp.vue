@@ -43,7 +43,7 @@ export default {
         .then(response => {
           console.log(response.data)
         }) */
-      this.$axios({
+      /* this.$axios({
         method: 'post',
         url: 'http://localhost:8016/user/register',
         data: {
@@ -53,12 +53,31 @@ export default {
           info: '很好很好'
         },
         headers: {}
-        /* headers: {'Content-Type': 'multipart/form-data'} */
       }).then(function (response) {
         console.log(response.data)
       }).catch(function (error) {
         console.log(error)
-      })
+      }) */
+      param.append('file', file)// 通过append向form对象添加数据
+      console.log(param.get('img')) // FormData私有类对象，访问不到，可以通过get判断值是否传进去
+      let config = {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      } // 添加请求头
+      this.$axios.post('http://localhost:8016/user/fileUpload', param, config)
+        .then(response => {
+
+        })
+
+      /* let form = new FormData()
+      form.append('file', file, file.name)
+      this.$axios.post('http://localhost:8016/user/fileUpload', form, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Access-Control-Allow-Origin': '*'
+        }
+      }).then(response => {
+        console.log(response.data)
+      }) */
     }
   }
 }
