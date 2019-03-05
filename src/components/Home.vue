@@ -8,9 +8,14 @@
 </template>
 
 <script>
-    export default {
-        name: "Home"
+export default {
+  name: 'Home',
+  methods: {
+    getbanaer: function () {
+      var that = this
     }
+  }
+}
 </script>
 
 <style scoped>
