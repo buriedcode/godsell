@@ -60,6 +60,7 @@ export default {
           that.show = false
           that.bt_show = true
           that.imgUrl = response.data.data.url
+
           that.pid = response.data.data.pid
           console.log(response.data.data.id)
         })
