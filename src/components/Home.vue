@@ -1,13 +1,21 @@
 <template>
     <div style="height: 100%;width: 100%">
-      <section class="swiper">
+      <SECTION>
       <swiper :options="swiperOption">
         <swiper-slide  class="my-swp-silde" v-for="(slide, key) in swiperList" :key="key" data-id="slide.id">
           <img class="my-swp-img" :src="slide.imgUrl" alt="">
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
-      </section>
+      <div style="display: flex;flex-wrap: wrap;width: 100%;height: 100%"  >
+        <div :key="item.id" v-for="item in swiperList" style="width: 50%;height: 150px">
+          <div style="width: 100%;height: 150px;background: aqua; display: flex;align-items: center;margin:10%">12345</div>
+        </div>
+        <!--<div style="width: 50%;height: 150px;background:yellow">54321</div>
+        <div style="width: 50%;height: 150px;background: yellow"></div>-->
+
+      </div>
+      </SECTION>
     </div>
 </template>
 
@@ -26,13 +34,15 @@ export default {
       swiperOption: {
         pagination: '.swiper-pagination',
         paginationClickable: true,
-        autoplay: 3000,
+        autoplay: true,
+        speed: 1000,
         autoHeight: true,
         slidesPerView: 1,
         spaceBetween: 30,
         loop: true
       },
-      swiperList: []
+      swiperList: [],
+      playList: []
     }
   },
   methods: {
