@@ -61,7 +61,7 @@ export default {
           that.bt_show = true
           that.imgUrl = response.data.data.url
 
-          that.pid = response.data.data.pid
+          that.pid = response.data.data.id
           console.log(response.data.data.id)
         })
     },
@@ -74,6 +74,7 @@ export default {
     submit: function () {
       var that = this
       console.log('名字' + that.name)
+      console.log('id值' + that.pid)
       this.$axios({
         method: 'post',
         url: 'http://localhost:8016/user/register',

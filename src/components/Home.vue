@@ -1,21 +1,22 @@
 <template>
     <div style="height: 100%;width: 100%">
-      <SECTION>
+
       <swiper :options="swiperOption">
         <swiper-slide  class="my-swp-silde" v-for="(slide, key) in swiperList" :key="key" data-id="slide.id">
           <img class="my-swp-img" :src="slide.imgUrl" alt="">
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
-      <div style="display: flex;flex-wrap: wrap;width: 100%;height: 100%"  >
-        <div :key="item.id" v-for="item in swiperList" style="width: 50%;height: 150px">
-          <div style="width: 100%;height: 150px;background: aqua; display: flex;align-items: center;margin:10%">12345</div>
+      <div  class="container" >
+        <div class="waterfall">
+        <div :key="item.id" v-for="item in userList"  >
+          <div  class="item">
+            <img :src="item.img" style="width: 100%;"/>
+            <span>{{item.info}}</span>
+          </div>
         </div>
-        <!--<div style="width: 50%;height: 150px;background:yellow">54321</div>
-        <div style="width: 50%;height: 150px;background: yellow"></div>-->
-
+        </div>
       </div>
-      </SECTION>
     </div>
 </template>
 
@@ -42,7 +43,8 @@ export default {
         loop: true
       },
       swiperList: [],
-      playList: []
+      playList: [],
+      userList: []
     }
   },
   methods: {
@@ -62,10 +64,26 @@ export default {
       }).catch(function (error) {
         console.log(error)
       })
+    },
+    getuserlist: function () {
+      var that = this
+      that.$axios({
+        method: 'get',
+        url: 'http://localhost:8016/user/users',
+        data: {
+        },
+        headers: {}
+      }).then(function (response) {
+        console.log(response.data)
+        that.userList = response.data.data
+      }).catch(function (error) {
+        console.log(error)
+      })
     }
   },
   created: function () {
     this.getbanaer()
+    this.getuserlist()
   }
 }
 </script>
@@ -82,5 +100,49 @@ export default {
     height: 100%;
     width: 100%;
   }
+  .container{width:100%;margin: 0 auto;}
 
+  /*瀑布流层*/
+
+  .waterfall{
+
+    -moz-column-count:2; /* Firefox */
+
+    -webkit-column-count:2; /* Safari 和 Chrome */
+
+    column-count:2;
+
+    -moz-column-gap: 1em;
+
+    -webkit-column-gap: 1em;
+
+    column-gap: 1em;
+
+  }
+
+  /*一个内容层*/
+
+  .item{
+
+    padding: 0.5em;
+
+    margin: 0 0 1em 0;
+
+    -moz-page-break-inside: avoid;
+
+    -webkit-column-break-inside: avoid;
+
+    break-inside: avoid;
+
+    border: 1px solid #000;
+
+  }
+
+  .item img{
+
+    width: 100%;
+
+    margin-bottom:10px;
+
+  }
 </style>
