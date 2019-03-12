@@ -6,7 +6,8 @@ import router from './router'
 import axios from 'axios'
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide} from 'vue-awesome-swiper'
-
+import infiniteScroll from 'vue-infinite-scroll'
+Vue.use(infiniteScroll)
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 /* eslint-disable no-new */
@@ -15,6 +16,6 @@ new Vue({
   router,
   axios,
   name: 'swiper',
-  components: { App, swiper, swiperSlide },
+  components: { App, swiper, swiperSlide},
   template: '<App/>'
 })

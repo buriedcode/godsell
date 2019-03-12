@@ -186,7 +186,7 @@
     flex-direction: column;
   }
   .roll{
-    flex: 1; width: 100%;overflow-y: scroll;-webkit-overflow-scrolling: touch;height: 100%;margin: 0px;
+    flex: 1; width: 100%;overflow-y: auto;-webkit-overflow-scrolling: touch;height: 100%;margin: 0px;
   }
   .foot{
     display: flex;
