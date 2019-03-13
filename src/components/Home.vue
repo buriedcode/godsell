@@ -2,14 +2,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 </header>
 <template>
-    <div style="height: 100%;width: 100%" id="app">
+    <div style="width: 100%;overflow-y : auto;height:100%" id="app" >
       <SECTION>
-     <!--   <swiper :options="swiperOption">
+        <swiper :options="swiperOption">
         <swiper-slide  class="my-swp-silde" v-for="(slide, key) in swiperList" :key="key" data-id="slide.id">
           <img class="my-swp-img" :src="slide.imgUrl" alt="">
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
-      </swiper>-->
+      </swiper>
       <div  class="container" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
         <div class="waterfall">
         <div :key="item.id" v-for="item in userList"  >
@@ -39,6 +39,8 @@ export default {
     return {
       scroller: null,
       loading: false,
+      busy: false,
+      check: false,
       swiperOption: {
         pagination: '.swiper-pagination',
         paginationClickable: true,
@@ -51,7 +53,9 @@ export default {
       },
       swiperList: [],
       playList: [],
-      userList: []
+      userList: [],
+      page: 1,
+      pagesize: 3
     }
   },
   methods: {
@@ -74,14 +78,18 @@ export default {
     },
     getuserlist: function () {
       var that = this
+      that.busy = false
       that.$axios({
-        method: 'get',
+        method: 'post',
         url: 'http://localhost:8016/user/users',
         data: {
+          'pageSize': that.pagesize,
+          'currentPage': that.page
         },
         headers: {}
       }).then(function (response) {
         console.log(response.data)
+        that.busy = true
         that.userList = response.data.data
       }).catch(function (error) {
         console.log(error)
@@ -89,6 +97,7 @@ export default {
     },
     loadMore () {
       console.log('more执行')
+      this.getuserlist()
     },
     onScroll: function () {
       console.log('123456789')
