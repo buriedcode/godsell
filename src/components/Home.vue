@@ -2,7 +2,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 </header>
 <template>
-    <div style="width: 100%;overflow-y : auto;height:100%" id="app" >
+    <div style="width: 100%;height:auto" id="app">
       <SECTION>
         <swiper :options="swiperOption">
         <swiper-slide  class="my-swp-silde" v-for="(slide, key) in swiperList" :key="key" data-id="slide.id">
@@ -12,7 +12,7 @@
       </swiper>
       <div  class="container" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
         <div class="waterfall">
-        <div :key="item.id" v-for="item in userList"  >
+        <div :key="item.id" v-for="item in userList">
           <div  class="item">
             <img :src="item.img" style="width: 100%;"/>
             <span>{{item.info}}</span>
@@ -55,7 +55,8 @@ export default {
       playList: [],
       userList: [],
       page: 1,
-      pagesize: 3
+      pagesize: 5,
+      i: 0
     }
   },
   methods: {
@@ -70,15 +71,13 @@ export default {
       }).then(function (response) {
         console.log(response.data)
         that.swiperList = response.data.data
-        console.log('12345' + response.data.data)
-        console.log('12345' + response.data.data[0].imgUrl)
       }).catch(function (error) {
         console.log(error)
       })
     },
     getuserlist: function () {
       var that = this
-      that.busy = false
+      that.busy = true
       that.$axios({
         method: 'post',
         url: 'http://localhost:8016/user/users',
@@ -89,30 +88,21 @@ export default {
         headers: {}
       }).then(function (response) {
         console.log(response.data)
-        that.busy = true
-        that.userList = response.data.data
+        that.busy = false
+        if (response.data.data.length == 0) {
+          that.busy = true
+        }
+        for (that.i = 0; that.i < response.data.data.length; that.i++) {
+          that.userList.push(response.data.data[that.i])
+        }
       }).catch(function (error) {
         console.log(error)
       })
     },
     loadMore () {
       console.log('more执行')
+      this.page++
       this.getuserlist()
-    },
-    onScroll: function () {
-      console.log('123456789')
-      // 可滚动容器的高度
-      let innerHeight = document.querySelector('#app').clientHeight
-      // 屏幕尺寸高度
-      let outerHeight = document.documentElement.clientHeight
-      // 可滚动容器超出当前窗口显示范围的高度
-      let scrollTop = document.documentElement.scrollTop
-      // scrollTop在页面为滚动时为0，开始滚动后，慢慢增加，滚动到页面底部时，出现innerHeight < (outerHeight + scrollTop)的情况，严格来讲，是接近底部。
-      console.log(innerHeight + ' ' + outerHeight + ' ' + scrollTop)
-      if (innerHeight < (outerHeight + scrollTop)) {
-        // 加载更多操作
-        console.log('loadmore')
-      }
     }
   },
   mounted () {
@@ -121,20 +111,6 @@ export default {
   created: function () {
     this.getbanaer()
     this.getuserlist()
-    // window.addEventListener('scroll', () => { console.log(window.scrollY) })
-    /* window.onscroll = function () {
-      // 变量scrollTop是滚动条滚动时，距离顶部的距离
-      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      // 变量windowHeight是可视区的高度
-      var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
-      // 变量scrollHeight是滚动条的总高度
-      var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-      // 滚动条到底部的条件
-      if (scrollTop + windowHeight == scrollHeight) {
-        // 写后台加载数据的函数
-        console.log('距顶部' + scrollTop + '可视区高度' + windowHeight + '滚动条总高度' + scrollHeight);
-      }
-    } */
   }
 
 }
@@ -152,7 +128,7 @@ export default {
     height: 100%;
     width: 100%;
   }
-  .container{width:100%;margin: 0 auto;}
+  .container{width:100%;height:100%;margin: 0 auto}
 
   /*瀑布流层*/
 
